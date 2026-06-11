@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reproductor de MP3 Local</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        .player-container { max-width: 400px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+        input[type="file"] { margin-bottom: 20px; }
+        audio { width: 100%; margin-top: 15px; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="player-container">
+        <h2>Reproductor MP3 Local</h2>
+        <!-- Selector de archivos del equipo -->
+        <input type="file" id="archivoMp3" accept=".mp3">
+        
+        <!-- Elemento de audio HTML -->
+        <audio id="reproductor" controls></audio>
+        
+        <p id="nombreCancion"></p>
+    </div>
+
+    <script>
+        const archivoInput = document.getElementById('archivoMp3');
+        const reproductor = document.getElementById('reproductor');
+        const nombreCancion = document.getElementById('nombreCancion');
+
+        archivoInput.addEventListener('change', function(event) {
+            const archivo = event.target.files[0];
+
+            if (archivo) {
+                // Crear una URL local temporal para el archivo
+                const objetoUrl = URL.createObjectURL(archivo);
+
+                // Asignar la URL al reproductor y hacerlo visible
+                reproductor.src = objetoUrl;
+                reproductor.style.display = 'block';
+                
+                // Mostrar el nombre del fichero
+                nombreCancion.textContent = `Archivo cargado: ${archivo.name}`;
+
+                // Reproducir automáticamente el archivo cargado
+                reproductor.play().catch(error => {
+                    console.log("La reproducción requiere interacción del usuario", error);
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
